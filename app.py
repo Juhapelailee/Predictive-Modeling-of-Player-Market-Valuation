@@ -10,184 +10,309 @@ st.set_page_config(page_title="Player Value Predictor", layout="wide")
 st.markdown(
     """
     <style>
-    /* Page background: subtle football pitch photo with lighter overlay */
+    /* Modern gradient background */
     .stApp {
-        background-image: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.1)), 
-                          url('https://images.unsplash.com/photo-1507925921958-8a45f6b60a3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
-        color: #1a1a1a;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        min-height: 100vh;
+    }
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
     
     /* Main container */
     .main .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
+        max-width: 1400px;
     }
     
-    /* Header style */
+    /* Modern hero header with glassmorphism */
     .hero {
-        background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
-        padding: 28px 32px;
-        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 40px 48px;
+        border-radius: 24px;
         display: flex;
         align-items: center;
-        gap: 20px;
-        box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-        margin-bottom: 32px;
-        border: 1px solid rgba(255,255,255,0.8);
-        backdrop-filter: blur(10px);
+        gap: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                    0 0 0 1px rgba(255, 255, 255, 0.2);
+        margin-bottom: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        animation: fadeInDown 0.8s ease-out;
     }
-    .hero h1 { 
-        margin: 0; 
-        font-size: 36px; 
-        color: #1a1a1a; 
-        font-weight: 700;
-        text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-    }
-    .subtitle { 
-        color: #4a4a4a; 
-        opacity: 0.95; 
-        font-size: 16px; 
-        margin-top: 8px;
-        font-weight: 400;
-    }
-
-    /* Form container */
-    .form-container {
-        background: rgba(255,255,255,0.75);
-        padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255,255,255,0.9);
-        backdrop-filter: blur(10px);
-        margin-bottom: 24px;
-    }
-    
-    /* Section headers */
-    .stSubheader {
-        color: #1a1a1a !important;
-        font-size: 20px !important;
-        font-weight: 600 !important;
-        margin-top: 24px !important;
-        margin-bottom: 16px !important;
-        padding-bottom: 8px;
-        border-bottom: 2px solid rgba(0,0,0,0.15);
-    }
-    
-    /* Result card with animation */
-    .result-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
-        padding: 32px;
-        border-radius: 20px;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        color: #1a1a1a;
-        border: 2px solid rgba(255,255,255,0.9);
-        backdrop-filter: blur(15px);
-        animation: slideIn 0.5s ease-out;
-        margin-top: 24px;
-    }
-    @keyframes slideIn {
+    @keyframes fadeInDown {
         from {
             opacity: 0;
-            transform: translateY(-20px);
+            transform: translateY(-30px);
         }
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
-    .result-value { 
-        font-size: 48px; 
-        font-weight: 800; 
-        margin: 12px 0; 
-        background: linear-gradient(135deg, #667eea, #764ba2);
+    .hero h1 { 
+        margin: 0; 
+        font-size: 42px; 
+        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    .result-sub { 
-        color: #4a4a4a; 
-        font-size: 16px; 
-        margin-top: 8px;
+    .subtitle { 
+        color: rgba(255, 255, 255, 0.95); 
+        font-size: 18px; 
+        margin-top: 12px;
+        font-weight: 400;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
-    /* Team badge */
-    .team-badge { 
-        width: 64px; 
-        height: 64px; 
-        border-radius: 50%; 
-        display:inline-block; 
-        border: 4px solid rgba(255,255,255,0.95);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        flex-shrink: 0;
+    /* Modern form container with glassmorphism */
+    .form-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 32px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2),
+                    0 0 0 1px rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-bottom: 32px;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     
-    /* Enhanced input styling */
+    /* Enhanced section headers */
+    .stSubheader {
+        color: #ffffff !important;
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        margin-top: 24px !important;
+        margin-bottom: 20px !important;
+        padding-bottom: 12px;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        letter-spacing: 0.5px;
+    }
+    
+    /* Premium result card */
+    .result-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        padding: 48px;
+        border-radius: 28px;
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3),
+                    0 0 0 1px rgba(255, 255, 255, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        animation: slideInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        margin-top: 32px;
+    }
+    @keyframes slideInScale {
+        from {
+            opacity: 0;
+            transform: translateY(-30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    .result-value { 
+        font-size: 56px; 
+        font-weight: 900; 
+        margin: 16px 0; 
+        background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #ffffff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        letter-spacing: -1px;
+    }
+    .result-sub { 
+        color: rgba(255, 255, 255, 0.95); 
+        font-size: 18px; 
+        margin-top: 12px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Enhanced team badge */
+    .team-badge { 
+        width: 80px; 
+        height: 80px; 
+        border-radius: 50%; 
+        display: inline-block; 
+        border: 4px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
+                    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        flex-shrink: 0;
+        animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    /* Modern input styling */
     .stSelectbox > div > div {
-        background-color: rgba(255,255,255,0.9);
-        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+    }
+    .stSelectbox > div > div:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+        transform: translateY(-2px);
     }
     
     .stNumberInput > div > div > input {
-        background-color: rgba(255,255,255,0.9);
-        color: #1a1a1a;
-        border-radius: 8px;
-    }
-    
-    /* Slider styling */
-    .stSlider {
-        padding: 12px 0;
-    }
-    
-    /* Radio button styling */
-    .stRadio > div {
-        background-color: rgba(255,255,255,0.7);
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(0,0,0,0.1);
-    }
-    
-    /* Submit button styling */
-    .stButton > button {
-        width: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-weight: 600;
-        font-size: 18px;
-        padding: 16px 32px;
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        transition: all 0.3s ease;
-        margin-top: 24px;
-    }
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(102, 126, 234, 0.6);
-    }
-    
-    /* Label styling */
-    label {
+        background-color: rgba(255, 255, 255, 0.95) !important;
         color: #1a1a1a !important;
-        font-weight: 500 !important;
-        font-size: 14px !important;
+        border-radius: 12px !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+    }
+    .stNumberInput > div > div > input:focus {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.6) !important;
     }
     
-    /* Metric cards */
-    .metric-card {
-        background: rgba(255,255,255,0.05);
+    /* Enhanced slider styling */
+    .stSlider {
+        padding: 16px 0;
+    }
+    .stSlider > div > div > div {
+        background-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    .stSlider > div > div > div > div {
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6)) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    /* Modern radio button styling */
+    .stRadio > div {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(10px);
         padding: 16px;
         border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.1);
-        margin: 8px 0;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Premium button styling */
+    .stButton > button {
+        width: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%) !important;
+        color: #667eea !important;
+        font-weight: 700 !important;
+        font-size: 20px !important;
+        padding: 20px 40px !important;
+        border-radius: 16px !important;
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        margin-top: 32px !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .stButton > button:hover {
+        transform: translateY(-4px) scale(1.02) !important;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+    }
+    .stButton > button:active {
+        transform: translateY(-2px) scale(1.01) !important;
+    }
+    
+    /* Enhanced label styling */
+    label {
+        color: rgba(255, 255, 255, 0.95) !important;
+        font-weight: 600 !important;
+        font-size: 15px !important;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    /* Modern metric cards */
+    [data-testid="stMetricValue"] {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+    [data-testid="stMetricLabel"] {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500 !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+    [data-testid="metric-container"] {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px);
+        padding: 20px !important;
+        border-radius: 16px !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px);
+        border-radius: 12px !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Success message styling */
+    .stSuccess {
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 12px !important;
+        color: #ffffff !important;
     }
     
     /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
     </style>
     """,
     unsafe_allow_html=True,
